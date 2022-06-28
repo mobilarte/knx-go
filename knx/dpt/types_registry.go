@@ -14,15 +14,36 @@ var (
 		new(DPT_1001),
 		new(DPT_1002),
 		new(DPT_1003),
+		new(DPT_1004),
+		new(DPT_1005),
+		new(DPT_1006),
+		new(DPT_1007),
 		new(DPT_1008),
 		new(DPT_1009),
 		new(DPT_1010),
+		new(DPT_1011),
+		new(DPT_1012),
+		new(DPT_1013),
+		new(DPT_1014),
+		new(DPT_1015),
+		new(DPT_1016),
+		new(DPT_1017),
+		new(DPT_1018),
+		new(DPT_1019),
+		new(DPT_1024),
 		new(DPT_1100),
 
 		// 5.xxx
 		new(DPT_5001),
 		new(DPT_5003),
 		new(DPT_5004),
+		new(DPT_5005),
+		new(DPT_5006),
+		new(DPT_5010),
+
+		// 6.xxx
+		new(DPT_6001),
+		new(DPT_6010),
 
 		// 7.xxx
 		new(DPT_7001),
@@ -36,6 +57,11 @@ var (
 		new(DPT_7011),
 		new(DPT_7012),
 		new(DPT_7013),
+		new(DPT_7600),
+
+		// 8.xxx
+		new(DPT_8001),
+		new(DPT_8012),
 
 		// 9.xxx
 		new(DPT_9001),
@@ -46,6 +72,7 @@ var (
 		new(DPT_9006),
 		new(DPT_9007),
 		new(DPT_9008),
+		new(DPT_9009),
 		new(DPT_9010),
 		new(DPT_9011),
 		new(DPT_9020),
@@ -57,6 +84,8 @@ var (
 		new(DPT_9026),
 		new(DPT_9027),
 		new(DPT_9028),
+		new(DPT_9029),
+		new(DPT_9030),
 
 		// 10.xxx
 		new(DPT_10001),
@@ -66,6 +95,11 @@ var (
 
 		// 12.xxx
 		new(DPT_12001),
+		new(DPT_12100),
+		new(DPT_12101),
+		new(DPT_12102),
+		new(DPT_121200),
+		new(DPT_121201),
 
 		// 13.xxx
 		new(DPT_13001),
@@ -78,6 +112,8 @@ var (
 		new(DPT_13015),
 		new(DPT_13016),
 		new(DPT_13100),
+		new(DPT_131200),
+		new(DPT_131201),
 
 		// 14.xxx
 		new(DPT_14000),
@@ -153,6 +189,7 @@ var (
 		new(DPT_14077),
 		new(DPT_14078),
 		new(DPT_14079),
+		new(DPT_14080),
 
 		// 16.xxx
 		new(DPT_16000),
@@ -163,6 +200,9 @@ var (
 
 		// 18.xxx
 		new(DPT_18001),
+
+		// 19.xxx
+		new(DPT_19001),
 
 		// 28.xxx
 		new(DPT_28001),

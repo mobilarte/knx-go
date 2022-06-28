@@ -1,9 +1,10 @@
 // Copyright 2017 Ole Krüger.
+// Copyright 2022 Martin Müller.
 // Licensed under the MIT license which can be found in the LICENSE file.
 
 package dpt
 
-// DPT_28001 represents DPT 28.001 / Var String UTF-8.
+// DPT_28001 represents DPT 28.001 (G) / DPT_UTF-8.
 type DPT_28001 string
 
 func (d DPT_28001) Pack() []byte {

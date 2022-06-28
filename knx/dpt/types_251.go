@@ -4,7 +4,8 @@ import (
 	"fmt"
 )
 
-// DPT_251600 represents DPT 251.600 / Colour RGBW - RGBW value 4x(0..100%) / U8 U8 U8 U8 r8 r4B4
+// DPT_251600 represents DPT 251.600 (FB) / DPT_Colour_RGBW.
+// Colour RGBW - RGBW value 4x(0..100%) / U8 U8 U8 U8 r8 r4B4
 type DPT_251600 struct {
 	Red        uint8
 	Green      uint8
@@ -55,5 +56,19 @@ func (d DPT_251600) Unit() string {
 }
 
 func (d DPT_251600) String() string {
-	return fmt.Sprintf("Red: %d Green: %d Blue: %d White: %d RedValid: %t, GreenValid: %t, BlueValid: %t, WhiteValid: %t", d.Red, d.Green, d.Blue, d.White, d.RedValid, d.GreenValid, d.BlueValid, d.WhiteValid)
+	//return fmt.Sprintf("Red: %d Green: %d Blue: %d White: %d RedValid: %t, GreenValid: %t, BlueValid: %t, WhiteValid: %t", d.Red, d.Green, d.Blue, d.White, d.RedValid, d.GreenValid, d.BlueValid, d.WhiteValid)
+	var valid uint8
+	if d.RedValid {
+		valid += 0x8
+	}
+	if d.GreenValid {
+		valid += 0x4
+	}
+	if d.BlueValid {
+		valid += 0x2
+	}
+	if d.WhiteValid {
+		valid += 0x1
+	}
+	return fmt.Sprintf("%02X %02X %02X %02X %02X %02X", d.Red, d.Green, d.Blue, d.White, 0, valid)
 }
