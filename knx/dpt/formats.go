@@ -120,8 +120,8 @@ func packV16(i int16) []byte {
 	buffer := make([]byte, 3)
 
 	buffer[0] = 0
-	buffer[1] = byte((i >> 8) & 0xff)
-	buffer[2] = byte(i & 0xff)
+	buffer[1] = byte((i >> 8) & 0xFF)
+	buffer[2] = byte(i & 0xFF)
 
 	return buffer
 }
@@ -158,10 +158,10 @@ func packV32(i int32) []byte {
 	buffer := make([]byte, 5)
 
 	buffer[0] = 0
-	buffer[1] = byte((i >> 24) & 0xff)
-	buffer[2] = byte((i >> 16) & 0xff)
-	buffer[3] = byte((i >> 8) & 0xff)
-	buffer[4] = byte(i & 0xff)
+	buffer[1] = byte((i >> 24) & 0xFF)
+	buffer[2] = byte((i >> 16) & 0xFF)
+	buffer[3] = byte((i >> 8) & 0xFF)
+	buffer[4] = byte(i & 0xFF)
 
 	return buffer
 }
@@ -188,7 +188,7 @@ func packF16(f float64) []byte {
 	signedMantissa := f * 100.0
 	exp := 0
 
-	for signedMantissa > 2048 || signedMantissa < -2048 {
+	for signedMantissa > 2047 || signedMantissa < -2048 {
 		signedMantissa /= 2
 		exp++
 	}
@@ -213,7 +213,7 @@ func unpackF16(data []byte, f *float64) error {
 		return ErrInvalidLength
 	}
 
-	// This value denotes invalid data, but only applies to DPT 9.00x
+	// This value denotes invalid data. It only applies to DPT 9.00x!
 	if data[1]&0x7F == 0x7F && data[2]&0xFF == 0xFF {
 		return ErrInvalidData
 	}
@@ -223,6 +223,7 @@ func unpackF16(data []byte, f *float64) error {
 	if data[1]&0x80 == 0x80 {
 		m -= 2048
 	}
+
 	value := float64(m<<e) / 100
 	*f = value
 
