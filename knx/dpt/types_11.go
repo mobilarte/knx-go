@@ -46,7 +46,7 @@ func (d *DPT_11001) Unpack(data []byte) error {
 	d.Year = uint16(data[3] & 0x7F)
 
 	if d.Year > 99 {
-		return fmt.Errorf("payload is out of range")
+		return ErrOutOfRange
 	}
 
 	if d.Year == 0 && d.Month == 0 && d.Day == 0 {
