@@ -25,21 +25,29 @@ func (d *DPT_18001) Unpack(data []byte) error {
 		return err
 	}
 
-	if *d <= 63 || (*d >= 128 && *d <= 191) {
-		*d = DPT_18001(value)
-		return nil
-	} else {
-		*d = DPT_18001(63)
-		return nil
+	*d = DPT_18001(value)
+	if !d.IsValid() {
+		return ErrOutOfRange
 	}
+	return nil
 }
 
 func (d DPT_18001) Unit() string {
 	return ""
 }
 
+func (d DPT_18001) IsValid() bool {
+	return d <= 63 || (d >= 128 && d <= 191)
+}
+
 // KNX Association recommends to display the scene numbers [1..64].
+// Displaying value like ETS.
 // See note 6 of the KNX Specifications v2.1.
 func (d DPT_18001) String() string {
-	return fmt.Sprintf("%d", uint8(d))
+	if d >= 128 && d <= 191 {
+		return fmt.Sprintf("learn %d", uint8(d)-128+1)
+	} else if d <= 63 {
+		return fmt.Sprintf("activate %d", uint8(d)+1)
+	}
+	return "invalid payload"
 }
