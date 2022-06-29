@@ -124,7 +124,7 @@ func (d *DPT_5006) Unpack(data []byte) error {
 	}
 
 	if !d.IsValid() {
-		return fmt.Errorf("payload is not valid")
+		return ErrOutOfRange
 	}
 
 	*d = DPT_5006(value)
