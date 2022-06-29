@@ -1,15 +1,16 @@
 // Copyright 2017 Ole Krüger.
+// Copyright 2022 Martin Müller.
 // Licensed under the MIT license which can be found in the LICENSE file.
 
 package dpt
 
 import (
-	"fmt"
 	"time"
 )
 
 // DPT_19001 represents DPT 19.001 (G) / DPT_DateTime.
-// Setting the field SP24 = true will produce 24:00:00 as a time only (Note 11).
+// Setting the field SP24 = true will produce 24:00:00 as a time only.
+// Used to define time ranges 00:00:00 -> 24:00:00.
 type DPT_19001 struct {
 	Date time.Time
 	SP24 bool
@@ -40,10 +41,10 @@ func (d DPT_19001) Pack() []byte {
 		buf[1] = uint8(year - 1900)
 
 		month := d.Date.Month()
-		buf[2] = uint8(month & 0x0F)
+		buf[2] = uint8(month & 0xF)
 
 		day := d.Date.Day()
-		buf[3] = uint8(day & 0x0F)
+		buf[3] = uint8(day & 0x1F)
 
 		weekday := uint8(d.Date.Weekday())
 		if weekday == 0 {
@@ -57,7 +58,6 @@ func (d DPT_19001) Pack() []byte {
 
 		seconds := uint8(d.Date.Second())
 		buf[6] = seconds & 0x3F
-
 	}
 
 	if d.F {
@@ -105,8 +105,9 @@ func (d *DPT_19001) Unpack(data []byte) error {
 	year := int(data[1]) + 1900
 
 	month := time.Month(data[2] & 0xF)
-	dayOfMonth := int(data[3] & 0x1F)
-	// unused because relying on go to get correct weekday
+	day := int(data[3] & 0x1F)
+
+	// dayOfWeek is unused because we are relying on go to get correct weekday
 	// dayOfWeek := uint8(data[4] >> 5)
 
 	hour := int(data[4] & 0x1F)
@@ -117,13 +118,13 @@ func (d *DPT_19001) Unpack(data []byte) error {
 		if minutes == 0 && seconds == 0 {
 			d.SP24 = true
 		} else {
-			return fmt.Errorf("payload is out of range")
+			return ErrOutOfRange
 		}
 	} else {
 		d.SP24 = false
 	}
 
-	d.Date = time.Date(year, month, dayOfMonth, hour, minutes, seconds, 0, time.UTC)
+	d.Date = time.Date(year, month, day, hour, minutes, seconds, 0, time.UTC)
 
 	d.F = (data[7]&0x80 == 0x80)
 	d.WD = (data[7]&0x40 == 0x40)
