@@ -13,11 +13,11 @@ var (
 	// ErrInvalidLength is returned when the application data has unexpected length.
 	ErrInvalidLength = errors.New("application data has invalid length")
 	// ErrInvalidData is returned when a bit or content denotes invalid data per KNX specification.
-	ErrInvalidData = errors.New("data is noted as invalid")
+	ErrInvalidData = errors.New("application data is noted as invalid")
 	// ErrOutOfRange is returned when the unpacked value is out of range.
-	ErrOutOfRange = errors.New("payload is out of range")
+	ErrOutOfRange = errors.New("application data is out of range")
 	// ErrBadReservedBits is returned when reserved bits are populated. E.g. if bit number 5 of a r4B4 field is populated.
-	ErrBadReservedBits = errors.New("reserved bits in the input data have been populated")
+	ErrBadReservedBits = errors.New("reserved bits in the application data have been populated")
 )
 
 func packB1(b bool) []byte {
@@ -34,6 +34,31 @@ func unpackB1(data []byte, b *bool) error {
 	}
 
 	*b = data[0]&1 == 1
+
+	return nil
+}
+
+func packB2(b1 bool, b0 bool) []byte {
+	var b byte = 0
+
+	if b1 {
+		b |= 1 << 1
+	}
+	if b0 {
+		b |= 1 << 0
+	}
+
+	return []byte{b}
+}
+
+func unpackB2(data []byte, b1 *bool, b0 *bool) error {
+
+	if data[0] > 0x3 {
+		return ErrBadReservedBits
+	}
+
+	*b1 = ((data[0] >> 1) & 1) != 0x0
+	*b0 = ((data[0] >> 0) & 1) != 0x0
 
 	return nil
 }

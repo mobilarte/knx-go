@@ -9,7 +9,7 @@ import (
 	"testing"
 )
 
-// Test DPT 1.xxx (B1)
+// Test DPT 1.xxx (B₁)
 func TestDPT_1(t *testing.T) {
 	type DPT1 struct {
 		Dpv     DatapointValue

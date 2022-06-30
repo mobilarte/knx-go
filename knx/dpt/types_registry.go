@@ -33,6 +33,10 @@ var (
 		new(DPT_1024),
 		new(DPT_1100),
 
+		// 2.xxx
+		new(DPT_2001),
+		new(DPT_2002),
+
 		// 5.xxx
 		new(DPT_5001),
 		new(DPT_5003),
@@ -61,6 +65,10 @@ var (
 
 		// 8.xxx
 		new(DPT_8001),
+		new(DPT_8002),
+		new(DPT_8005),
+		new(DPT_8007),
+		new(DPT_8010),
 		new(DPT_8012),
 
 		// 9.xxx
