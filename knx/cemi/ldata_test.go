@@ -30,7 +30,7 @@ func makeRandLData() []byte {
 	return bytes.Join([][]byte{
 		makeRandInfoSegment(),
 		makeRandBuffer(6),
-		[]byte{0, 1 << 7},
+		{0, 1 << 7},
 	}, nil)
 }
 

@@ -82,8 +82,8 @@ func Size(service ServicePackable) uint {
 
 // Pack generates a KNXnet/IP packet. Utilize Size() to determine the required size of the buffer.
 func Pack(buffer []byte, srv ServicePackable) {
-	buffer[0] = 6
-	buffer[1] = 16
+	buffer[0] = 0x6
+	buffer[1] = 0x10
 	util.Pack(buffer[2:], uint16(srv.Service()))
 	util.Pack(buffer[4:], uint16(srv.Size()+6))
 	srv.Pack(buffer[6:])
@@ -98,8 +98,8 @@ func AllocAndPack(srv ServicePackable) []byte {
 
 // These are errors that might occur during unpacking.
 var (
-	ErrHeaderLength  = errors.New("Header length is not 6")
-	ErrHeaderVersion = errors.New("Protocol version is not 16")
+	ErrHeaderLength  = errors.New("header length is not 0x6")
+	ErrHeaderVersion = errors.New("protocol version is not 0x10")
 )
 
 type serviceUnpackable interface {
@@ -139,11 +139,11 @@ func Unpack(data []byte, srv *Service) (uint, error) {
 		return n, err
 	}
 
-	if headerLen != 6 {
+	if headerLen != 0x6 {
 		return n, ErrHeaderLength
 	}
 
-	if version != 16 {
+	if version != 0x10 {
 		return n, ErrHeaderVersion
 	}
 

@@ -14,7 +14,7 @@ const (
 	friendlyNameMaxLen = 30
 )
 
-// DescriptionType describes the type of a DeviceInformationBlock
+// DescriptionType describes the type of a DeviceInformationBlock.
 type DescriptionType uint8
 
 const (
@@ -24,40 +24,40 @@ const (
 	// DescriptionTypeSupportedServiceFamilies describes Service families supported by the device.
 	DescriptionTypeSupportedServiceFamilies DescriptionType = 0x02
 
-	// DescriptionTypeIPConfig describes IP configuration
+	// DescriptionTypeIPConfig describes IP configuration.
 	DescriptionTypeIPConfig DescriptionType = 0x03
 
-	// DescriptionTypeIPCurrentConfig describes current IP configuration
+	// DescriptionTypeIPCurrentConfig describes current IP configuration.
 	DescriptionTypeIPCurrentConfig DescriptionType = 0x04
 
-	// DescriptionTypeKNXAddresses describes KNX addresses
+	// DescriptionTypeKNXAddresses describes KNX addresses.
 	DescriptionTypeKNXAddresses DescriptionType = 0x05
 
 	// DescriptionTypeManufacturerData describes a DIB structure for further data defined by device manufacturer.
 	DescriptionTypeManufacturerData DescriptionType = 0xfe
 )
 
-// KNXMedium describes the KNX medium type
+// KNXMedium describes the KNX medium type.
 type KNXMedium uint8
 
 const (
-	// KNXMediumTP1 is the TP1 medium
+	// KNXMediumTP1 is the TP1 medium.
 	KNXMediumTP1 KNXMedium = 0x02
-	// KNXMediumPL110 is the PL110 medium
+	// KNXMediumPL110 is the PL110 medium.
 	KNXMediumPL110 KNXMedium = 0x04
-	// KNXMediumRF is the RF medium
+	// KNXMediumRF is the RF medium.
 	KNXMediumRF KNXMedium = 0x10
-	// KNXMediumIP is the IP medium
+	// KNXMediumIP is the IP medium.
 	KNXMediumIP KNXMedium = 0x20
 )
 
-// ProjectInstallationIdentifier describes a KNX project installation identifier
+// ProjectInstallationIdentifier describes a KNX project installation identifier.
 type ProjectInstallationIdentifier uint16
 
-// DeviceStatus describes the device status
+// DeviceStatus describes the device status.
 type DeviceStatus uint8
 
-// DeviceSerialNumber desribes the serial number of a device
+// DeviceSerialNumber desribes the serial number of a device.
 type DeviceSerialNumber [6]byte
 
 // DeviceInformationBlock contains information about a device.
@@ -121,13 +121,13 @@ func (info *DeviceInformationBlock) Unpack(data []byte) (n uint, err error) {
 	n += nn
 
 	if length != uint8(info.Size()) {
-		return n, errors.New("Device info structure length is invalid")
+		return n, errors.New("device info structure length is invalid")
 	}
 
 	return
 }
 
-// SupportedServicesDIB contains information about the supported services of a device
+// SupportedServicesDIB contains information about the supported services of a device.
 type SupportedServicesDIB struct {
 	Type     DescriptionType
 	Families []ServiceFamily
@@ -171,7 +171,7 @@ func (sdib *SupportedServicesDIB) Unpack(data []byte) (n uint, err error) {
 		f := ServiceFamily{}
 		nn, err := f.Unpack(data[n:])
 		if err != nil {
-			return n, errors.New("Unable to unpack service family")
+			return n, errors.New("unable to unpack service family")
 		}
 
 		n += nn
@@ -179,33 +179,33 @@ func (sdib *SupportedServicesDIB) Unpack(data []byte) (n uint, err error) {
 	}
 
 	if length != uint8(sdib.Size()) {
-		return n, errors.New("Supported Services structure length is invalid")
+		return n, errors.New("supported Services structure length is invalid")
 	}
 
 	return
 }
 
-// ServiceFamilyType describes a KNXnet service family type
+// ServiceFamilyType describes a KNXnet service family type.
 type ServiceFamilyType uint8
 
 const (
-	// ServiceFamilyTypeIPCore is the KNXnet/IP Core family type
+	// ServiceFamilyTypeIPCore is the KNXnet/IP Core family type.
 	ServiceFamilyTypeIPCore = 0x02
-	// ServiceFamilyTypeIPDeviceManagement is the KNXnet/IP Device Management family type
+	// ServiceFamilyTypeIPDeviceManagement is the KNXnet/IP Device Management family type.
 	ServiceFamilyTypeIPDeviceManagement = 0x03
-	// ServiceFamilyTypeIPTunnelling is the KNXnet/IP Tunnelling family type
+	// ServiceFamilyTypeIPTunnelling is the KNXnet/IP Tunnelling family type.
 	ServiceFamilyTypeIPTunnelling = 0x04
-	// ServiceFamilyTypeIPRouting is the KNXnet/IP Routing family type
+	// ServiceFamilyTypeIPRouting is the KNXnet/IP Routing family type.
 	ServiceFamilyTypeIPRouting = 0x05
-	// ServiceFamilyTypeIPRemoteLogging is the KNXnet/IP Remote Logging family type
+	// ServiceFamilyTypeIPRemoteLogging is the KNXnet/IP Remote Logging family type.
 	ServiceFamilyTypeIPRemoteLogging = 0x06
-	// ServiceFamilyTypeIPRemoteConfigurationAndDiagnosis is the KNXnet/IP Remote Configuration and Diagnosis family type
+	// ServiceFamilyTypeIPRemoteConfigurationAndDiagnosis is the KNXnet/IP Remote Configuration and Diagnosis family type.
 	ServiceFamilyTypeIPRemoteConfigurationAndDiagnosis = 0x07
-	// ServiceFamilyTypeIPObjectServer is the KNXnet/IP Object Server family type
+	// ServiceFamilyTypeIPObjectServer is the KNXnet/IP Object Server family type.
 	ServiceFamilyTypeIPObjectServer = 0x08
 )
 
-// ServiceFamily describes a KNXnet service supported by a device
+// ServiceFamily describes a KNXnet service supported by a device.
 type ServiceFamily struct {
 	Type    ServiceFamilyType
 	Version uint8

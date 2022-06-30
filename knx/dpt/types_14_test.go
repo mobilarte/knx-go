@@ -8,17 +8,6 @@ import (
 	"math/rand"
 )
 
-func getRandValue() (float32, float32) {
-	value := rand.Float32()
-
-	// Scale the random number to the given range
-	value *= 670760
-
-	// Calculate the quantization error we expect
-	Q := get_float_quantization_error(value, 0.01, 2047)
-	return value, Q
-}
-
 // Test DPT 14.xxx (F32)
 func TestDPT_14(t *testing.T) {
 	type DPT14 struct {
@@ -53,6 +42,30 @@ func TestDPT_14(t *testing.T) {
 		}
 		if fmt.Sprintf("%s", e.Dpv) != e.MaxStr {
 			t.Errorf("%#v has wrong largest value [%v]. Should be [%s].", e.Dpv, e.Dpv, e.MaxStr)
+		}
+	}
+}
+
+func TestDPT_14P(t *testing.T) {
+	var dst DPT_14001
+
+	for i := 1; i <= 1000; i++ {
+		value := rand.Float32()
+		src := DPT_14001(value)
+		buf := src.Pack()
+
+		bitrep := fmt.Sprintf("%08b%08b%08b%08b", buf[1], buf[2], buf[3], buf[4])
+		if fmt.Sprintf("%032b", math.Float32bits(value)) != bitrep {
+			t.Errorf("%#v has bad packing [%s]. Should be [%032b].", src, bitrep, math.Float32bits(value))
+		}
+
+		err := dst.Unpack(buf)
+		if err != nil {
+			t.Errorf("%#v error unpacking [%s].", dst, bitrep)
+		}
+
+		if math.Float32bits(value) != math.Float32bits(float32(dst)) {
+			t.Errorf("%#v has bad unpacking [%s]. Should be [%032b].", src, bitrep, math.Float32bits(value))
 		}
 	}
 }

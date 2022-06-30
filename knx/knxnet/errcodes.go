@@ -93,7 +93,7 @@ func (err ErrCode) String() string {
 	}
 }
 
-// Error implements the error interface
+// Error implements the error interface.
 func (err ErrCode) Error() string {
 	return err.String()
 }

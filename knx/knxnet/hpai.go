@@ -40,7 +40,7 @@ type HostInfo struct {
 	Port     Port
 }
 
-// HostInfoFromAddress returns HostInfo from a UDP address
+// HostInfoFromAddress returns HostInfo from a UDP address.
 func HostInfoFromAddress(address *net.UDPAddr) (HostInfo, error) {
 	ipAddress := address.IP.To4()
 
@@ -89,7 +89,7 @@ func (info *HostInfo) Unpack(data []byte) (n uint, err error) {
 	}
 
 	if length != 8 {
-		return n, errors.New("Host info structure length is invalid")
+		return n, errors.New("host info structure length is invalid")
 	}
 
 	return

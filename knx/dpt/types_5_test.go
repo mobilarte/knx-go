@@ -10,7 +10,7 @@ import (
 	"testing"
 )
 
-// Test DPT 5.xxx (U8)
+// Test DPT 5.xxx (U₈)
 func TestDPT_5(t *testing.T) {
 	type DPT5 struct {
 		Dpv    DatapointValue
@@ -32,22 +32,20 @@ func TestDPT_5(t *testing.T) {
 	for _, e := range types_5 {
 		src := e.Dpv
 		if fmt.Sprintf("%s", src) != e.MinStr {
-			t.Errorf("%#v has wrong default value [%v]. Should be [%s].", e.Dpv, e.Dpv, e.MinStr)
+			t.Errorf("%#v has wrong min value [%v]. Should be [%s].", e.Dpv, e.Dpv, e.MinStr)
 		}
 
 		err := e.Dpv.Unpack(packU8(255))
 		if err != nil {
-			if fmt.Sprintf("%v", err) != "payload is not valid" {
-				t.Errorf("%v", err)
-			}
+			t.Errorf("%v", err)
 		}
 		if fmt.Sprintf("%s", e.Dpv) != e.MaxStr {
-			t.Errorf("%#v has wrong true value [%v]. Should be [%s].", e.Dpv, e.Dpv, e.MaxStr)
+			t.Errorf("%#v has wrong max value [%v]. Should be [%s].", e.Dpv, e.Dpv, e.MaxStr)
 		}
 	}
 
 	// Compute the quantization error we expect. We should get less than that
-	const Q = float32(360) / 255.0
+	const Q = float32(360.0 / 255.0)
 
 	for i := 0; i <= 36000; i++ {
 		value := float32(i / 100.0)

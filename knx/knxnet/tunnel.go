@@ -12,13 +12,13 @@ import (
 
 // A TunnelReq asks a gateway to transmit data.
 type TunnelReq struct {
-	// Communication channel
+	// Communication channel.
 	Channel uint8
 
-	// Sequential number, used to track acknowledgements
+	// Sequential number, used to track acknowledgements.
 	SeqNumber uint8
 
-	// Data to be tunneled
+	// Data to be tunneled.
 	Payload cemi.Message
 }
 
@@ -52,7 +52,7 @@ func (req *TunnelReq) Unpack(data []byte) (n uint, err error) {
 	}
 
 	if length != 4 {
-		return n, errors.New("Length header is not 4")
+		return n, errors.New("length header is not 4")
 	}
 
 	m, err := cemi.Unpack(data[n:], &req.Payload)
@@ -63,13 +63,13 @@ func (req *TunnelReq) Unpack(data []byte) (n uint, err error) {
 
 // A TunnelRes is a response to a TunnelRequest. It acts as an acknowledgement.
 type TunnelRes struct {
-	// Communication channel
+	// Communication channel.
 	Channel uint8
 
-	// Identifies the request that is being acknowledged
+	// Identifies the request that is being acknowledged.
 	SeqNumber uint8
 
-	// Status code, determines whether the tunneling succeeded or not
+	// Status code, determines whether the tunnelling succeeded or not.
 	Status ErrCode
 }
 
@@ -101,7 +101,7 @@ func (res *TunnelRes) Unpack(data []byte) (n uint, err error) {
 	}
 
 	if length != 4 {
-		return n, errors.New("Length header is not 4")
+		return n, errors.New("length header is not 4")
 	}
 
 	return
