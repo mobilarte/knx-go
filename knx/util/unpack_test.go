@@ -137,7 +137,7 @@ func TestUnpack(t *testing.T) {
 
 type unpackableBad struct{}
 
-var errBadUnpack = errors.New("Bad unpack")
+var errBadUnpack = errors.New("bad unpack")
 
 func (unpackableBad) Unpack(data []byte) (uint, error) {
 	return 0, errBadUnpack

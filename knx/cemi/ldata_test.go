@@ -16,6 +16,7 @@ func makeRandBuffer(n int) []byte {
 	return buffer
 }
 
+/*
 func makeRandTPDUSegment() []byte {
 	n := rand.Int() % 256
 
@@ -25,6 +26,7 @@ func makeRandTPDUSegment() []byte {
 
 	return buffer
 }
+*/
 
 func makeRandLData() []byte {
 	return bytes.Join([][]byte{

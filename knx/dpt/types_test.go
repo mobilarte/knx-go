@@ -3,19 +3,16 @@
 
 package dpt
 
-import (
-	"math"
-)
-
-// Define epsilon constant for floating point checks
-const epsilon = 1e-3
-
 func abs(x float32) float32 {
 	if x < 0.0 {
 		return -x
 	}
 	return x
 }
+
+/*
+// Define epsilon constant for floating point checks
+const epsilon = 1e-3
 
 func get_float_quantization_error(value, resolution float32, mantis int) float32 {
 	// Calculate the exponent for the value given the mantis and value resolution
@@ -29,3 +26,4 @@ func get_float_quantization_error(value, resolution float32, mantis int) float32
 	// Scale back the quantization error with the given resolution
 	return float32(q) / resolution
 }
+*/
