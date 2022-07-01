@@ -58,7 +58,7 @@ func main() {
 	// Close upon exiting. Even if the gateway closes the connection, we still have to clean up.
 	defer client.Close()
 
-	// Send 20.5°C to group 1/2/3.
+	// Send 20.5 °C to group 1/2/3.
 	err = client.Send(knx.GroupEvent{
 		Command:     knx.GroupWrite,
 		Destination: cemi.NewGroupAddr3(1, 2, 3),
@@ -97,8 +97,7 @@ client, err := knx.NewGroupRouter("224.0.23.12:3671", knx.DefaultRouterConfig)
 ### KNXnet/IP CEMI Client
 
 Use [Tunnel](https://godoc.org/github.com/vapourismo/knx-go/knx#Tunnel) or
-[Router](https://godoc.org/github.com/vapourismo/knx-go/knx#Router) for finer control over the
-communication with a gateway or router.
+[Router](https://godoc.org/github.com/vapourismo/knx-go/knx#Router) for finer control over the communication with a gateway or router.
 
 ### KNX Bridge
 
