@@ -44,7 +44,7 @@ func TestDPT_5(t *testing.T) {
 		}
 	}
 
-	// Compute the quantization error we expect. We should get less than that
+	// Compute the quantization error we expect. We should get less than that.
 	const Q = float32(360.0 / 255.0)
 
 	for i := 0; i <= 36000; i++ {
@@ -67,6 +67,6 @@ func TestDPT_5(t *testing.T) {
 	var dst DPT_5003
 	dst.Unpack(src.Pack())
 	if dst.String() != "319°" {
-		t.Errorf("Unpacked value is [%v]. Shoul be [319°].", dst)
+		t.Errorf("Unpacked value is [%v]. Should be [319°].", dst)
 	}
 }

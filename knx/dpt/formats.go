@@ -33,19 +33,19 @@ func unpackB1(data []byte, b *bool) error {
 		return ErrInvalidLength
 	}
 
-	*b = data[0]&1 == 1
+	*b = data[0]&0x1 == 0x1
 
 	return nil
 }
 
 func packB2(b1 bool, b0 bool) []byte {
-	var b byte = 0
+	var b byte
 
 	if b1 {
-		b |= 1 << 1
+		b |= 0x2
 	}
 	if b0 {
-		b |= 1 << 0
+		b |= 0x1
 	}
 
 	return []byte{b}
@@ -57,40 +57,41 @@ func unpackB2(data []byte, b1 *bool, b0 *bool) error {
 		return ErrBadReservedBits
 	}
 
-	*b1 = ((data[0] >> 1) & 1) != 0x0
-	*b0 = ((data[0] >> 0) & 1) != 0x0
+	*b1 = data[0]&0x2 == 0x2
+	*b0 = data[0]&0x1 == 0x1
 
 	return nil
 }
 
-func packB4(bs [4]bool) byte {
-	var b byte = 0
-	if bs[0] {
-		b |= 1 << 0
+func packB4(b3 bool, b2 bool, b1 bool, b0 bool) byte {
+	var b byte
+
+	if b3 {
+		b |= 0x8
 	}
-	if bs[1] {
-		b |= 1 << 1
+	if b2 {
+		b |= 0x4
 	}
-	if bs[2] {
-		b |= 1 << 2
+	if b1 {
+		b |= 0x2
 	}
-	if bs[3] {
-		b |= 1 << 3
+	if b0 {
+		b |= 0x1
 	}
 
 	return byte(b)
 }
 
-func unpackB4(data byte, b0 *bool, b1 *bool, b2 *bool, b3 *bool) error {
+func unpackB4(data byte, b3 *bool, b2 *bool, b1 *bool, b0 *bool) error {
 
 	if uint8(data) > 15 {
 		return ErrBadReservedBits
 	}
 
-	*b0 = ((data >> 0) & 1) != 0
-	*b1 = ((data >> 1) & 1) != 0
-	*b2 = ((data >> 2) & 1) != 0
-	*b3 = ((data >> 3) & 1) != 0
+	*b3 = data&0x8 == 0x8
+	*b2 = data&0x4 == 0x4
+	*b1 = data&0x2 == 0x2
+	*b0 = data&0x1 == 0x1
 
 	return nil
 }
@@ -144,9 +145,7 @@ func unpackU16(data []byte, i *uint16) error {
 func packV16(i int16) []byte {
 	buffer := make([]byte, 3)
 
-	buffer[0] = 0
-	buffer[1] = byte((i >> 8) & 0xFF)
-	buffer[2] = byte(i & 0xFF)
+	binary.BigEndian.PutUint16(buffer[1:], uint16(i))
 
 	return buffer
 }
@@ -156,7 +155,7 @@ func unpackV16(data []byte, i *int16) error {
 		return ErrInvalidLength
 	}
 
-	*i = int16(data[1])<<8 | int16(data[2])
+	*i = int16(binary.BigEndian.Uint16(data[1:]))
 
 	return nil
 }
@@ -182,11 +181,7 @@ func unpackU32(data []byte, i *uint32) error {
 func packV32(i int32) []byte {
 	buffer := make([]byte, 5)
 
-	buffer[0] = 0
-	buffer[1] = byte((i >> 24) & 0xFF)
-	buffer[2] = byte((i >> 16) & 0xFF)
-	buffer[3] = byte((i >> 8) & 0xFF)
-	buffer[4] = byte(i & 0xFF)
+	binary.BigEndian.PutUint32(buffer[1:], uint32(i))
 
 	return buffer
 }
@@ -196,7 +191,25 @@ func unpackV32(data []byte, i *int32) error {
 		return ErrInvalidLength
 	}
 
-	*i = int32(data[1])<<24 | int32(data[2])<<16 | int32(data[3])<<8 | int32(data[4])
+	*i = int32(binary.BigEndian.Uint32(data[1:]))
+
+	return nil
+}
+
+func packV64(i int64) []byte {
+	buffer := make([]byte, 9)
+
+	binary.BigEndian.PutUint64(buffer[1:], uint64(i))
+
+	return buffer
+}
+
+func unpackV64(data []byte, i *int64) error {
+	if len(data) != 9 {
+		return ErrInvalidLength
+	}
+
+	*i = int64(binary.BigEndian.Uint64(data[1:]))
 
 	return nil
 }
