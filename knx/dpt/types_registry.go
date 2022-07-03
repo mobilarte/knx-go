@@ -31,6 +31,9 @@ var dptTypes = map[string]DatapointValue{
 	"2.001": new(DPT_2001),
 	"2.002": new(DPT_2002),
 
+	// 3.xxx
+	"3.007": new(DPT_3007),
+
 	// 5.xxx
 	"5.001": new(DPT_5001),
 	"5.003": new(DPT_5003),
@@ -233,13 +236,10 @@ var dptTypes = map[string]DatapointValue{
 
 // ListSupportedTypes returns the name all known datapoint types (DPTs).
 func ListSupportedTypes() []string {
-	keys := make([]string, len(dptTypes))
+	keys := make([]string, 0, len(dptTypes))
 
-	// Fill the key-list
-	i := 0
 	for k := range dptTypes {
-		keys[i] = k
-		i++
+		keys = append(keys, k)
 	}
 
 	return keys
@@ -247,7 +247,7 @@ func ListSupportedTypes() []string {
 
 // Produce returns a copy of an instance of the given datapoint type name e.g. "1.001".
 func Produce(name string) (DatapointValue, bool) {
-	// Lookup the given type return a copy of the given datapoint.
+	// Lookup the given type and return a copy of the given datapoint.
 	if d, ok := dptTypes[name]; ok {
 		return d, ok
 	}

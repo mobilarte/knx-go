@@ -38,6 +38,26 @@ func unpackB1(data []byte, b *bool) error {
 	return nil
 }
 
+func packB1U3(c bool, v uint8) []byte {
+	if c {
+		return []byte{v&0x7 | 0x8}
+	}
+
+	return []byte{v & 0x7}
+
+}
+
+func unpackB1U3(data []byte, c *bool, v *uint8) error {
+	if len(data) != 1 {
+		return ErrInvalidLength
+	}
+
+	*c = data[0]&0x8 == 0x8
+	*v = data[0] & 0x7
+
+	return nil
+}
+
 func packB2(b1 bool, b0 bool) []byte {
 	var b byte
 
@@ -52,6 +72,9 @@ func packB2(b1 bool, b0 bool) []byte {
 }
 
 func unpackB2(data []byte, b1 *bool, b0 *bool) error {
+	if len(data) != 1 {
+		return ErrInvalidLength
+	}
 
 	if data[0] > 0x3 {
 		return ErrBadReservedBits
@@ -251,7 +274,7 @@ func unpackF16(data []byte, f *float64) error {
 		return ErrInvalidLength
 	}
 
-	// This value denotes invalid data. It only applies to DPT 9.00x!
+	// This value denotes invalid data, only applies to DPT 9.00x!
 	if data[1]&0x7F == 0x7F && data[2]&0xFF == 0xFF {
 		return ErrInvalidData
 	}
