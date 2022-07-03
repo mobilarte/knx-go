@@ -3,6 +3,8 @@
 
 package dpt
 
+import "reflect"
+
 var dptTypes = map[string]DatapointValue{
 	// 1.xxx
 	"1.001": new(DPT_1001),
@@ -247,9 +249,10 @@ func ListSupportedTypes() []string {
 
 // Produce returns a copy of an instance of the given datapoint type name e.g. "1.001".
 func Produce(name string) (DatapointValue, bool) {
-	// Lookup the given type and return a copy of the given datapoint.
+	// Lookup the given type and return a datapoint of the given type.
 	if d, ok := dptTypes[name]; ok {
-		return d, ok
+		d_type := reflect.TypeOf(d).Elem()
+		return reflect.New(d_type).Interface().(DatapointValue), ok
 	}
 	return nil, false
 }
